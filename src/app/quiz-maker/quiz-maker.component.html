@@ -1,0 +1,31 @@
+<div class="row">
+  <form (submit)="createQuiz()" [formGroup]="form">
+    <div class="col-sm-11">
+      <select id="categorySelect" formControlName="mainCategory">
+        <option value="">Select category</option>
+        <option [ngValue]="cat" *ngFor="let cat of categories$ | async">
+          {{cat.name}}
+        </option>
+      </select>
+      <ng-container *ngIf="subcategories$ | async as subcategories">
+        <select id="subcategorySelect" formControlName="subCategory">
+          <option value="">Select subcategory</option>
+          <option [ngValue]="sub" *ngFor="let sub of subcategories">
+            {{sub.name}}
+          </option>
+        </select>
+      </ng-container>
+      <select id="difficultySelect" formControlName="difficulty">
+        <option value="">Select difficulty</option>
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+      <button class="primary" id="createBtn" type="submit">Create</button>
+    </div>
+  </form>
+
+</div>
+<div class="row">
+   <app-quiz [questions]="questions$ | async" ></app-quiz>
+</div>
