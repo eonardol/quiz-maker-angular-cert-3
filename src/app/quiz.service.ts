@@ -18,26 +18,23 @@ export class QuizService {
     return this.http.get<{ trivia_categories: Category[] }>(this.API_URL + "api_category.php").pipe(
       map(res => res.trivia_categories),
       map(categoryList => {
-        let toReturn: CategoryWithSub[] = [];
-
-        for (let category of categoryList) {
-          // category.name.startsWith("Entertainment: ") || category.name.startsWith("Science: ")
-          if (category.name.indexOf(": ") > -1) {
-            const [mainCategoryName, subCategoryName] = category.name.split(": ");
-            let mainCategory = toReturn.find(el=>el.name === mainCategoryName);
+        return categoryList.reduce((acc, currentCategory) => { 
+          if (currentCategory.name.indexOf(": ") > -1) {
+            const [mainCategoryName, subCategoryName] = currentCategory.name.split(": ");
+            let mainCategory = acc.find(el=>el.name === mainCategoryName);
             if (!mainCategory) {
               mainCategory = {id: 0, name: mainCategoryName, subcategories: []};
-              toReturn.push(mainCategory);
+              acc.push(mainCategory);
             }
 
-            mainCategory.subcategories?.push({...category, name: subCategoryName});
+            mainCategory.subcategories?.push({...currentCategory, name: subCategoryName});
           }
           else {
-            toReturn.push(category);
+            acc.push(currentCategory);
           }
-        }
 
-        return toReturn;
+          return acc;
+        }, [] as CategoryWithSub[]);
       })
     );
   }
