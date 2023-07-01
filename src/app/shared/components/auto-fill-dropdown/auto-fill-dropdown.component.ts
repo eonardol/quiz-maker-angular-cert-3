@@ -1,18 +1,22 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, combineLatest, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { Category } from 'src/app/models/data.models';
+
+interface Props {
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: 'auto-fill-dropdown',
   templateUrl: './auto-fill-dropdown.component.html',
   styleUrls: ['./auto-fill-dropdown.component.css']
 })
-export class AutoFillDropdownComponent<Type extends Category> {
-  _source!: Type[];
+export class AutoFillDropdownComponent<T extends Required<Props>> {
+  _source!: T[];
 
   @Input()
-  set source(value: Type[]) {
+  set source(value: T[]) {
     this._source = value;
     this.userInputFormControl.setValue('');
   }
@@ -25,22 +29,22 @@ export class AutoFillDropdownComponent<Type extends Category> {
   @Input()
   placeholder!: string;
   
-  filtered$!: Observable<Type[] | null | undefined>
+  filtered$!: Observable<T[] | null | undefined>;
 
   @Output()
-  onChange: EventEmitter<Type> = new EventEmitter();
+  onChange: EventEmitter<T> = new EventEmitter();
 
   ngOnInit(): void {
     this.filtered$ = this.userInputFormControl.valueChanges.pipe(
       map((userInput)=>{
-        return this._source?.filter(c => c.name.toLowerCase().indexOf(userInput.toLowerCase()) !== -1)
+        return this._source?.filter(c => c.name?.toLowerCase().indexOf(userInput.toLowerCase()) !== -1)
       })
     );
   }
 
   
 
-  updateValue(item: Type) {
+  updateValue(item: any) {
     // set only name in "fake" form input 
     this.userInputFormControl.setValue(item.name);
 
