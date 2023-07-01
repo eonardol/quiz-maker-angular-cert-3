@@ -1,0 +1,40 @@
+<div class="row">
+    <form (submit)="createQuiz()" [formGroup]="form">
+      <div class="col-sm-11">
+
+        <ng-container *ngIf="categories$ | async as categories">
+          <auto-fill-dropdown
+              placeholder="Select category"
+              [fc]="getFormControl('mainCategory')"
+              [source]="categories"
+          ></auto-fill-dropdown>
+        </ng-container>
+
+
+        <ng-container *ngIf="subcategories$ | async as subcategories">
+          <auto-fill-dropdown
+            placeholder="Select subcategory"
+            [fc]="getFormControl('subCategory')"
+            [source]="subcategories"
+          ></auto-fill-dropdown>
+        </ng-container>
+
+        
+        <select id="difficultySelect" formControlName="difficulty">
+          <option value="">Select difficulty</option>
+          <option>Easy</option>
+          <option>Medium</option>
+          <option>Hard</option>
+        </select>
+        <button class="primary" id="createBtn" type="submit">Create</button>
+      </div>
+    </form>
+  
+  </div>
+  <div class="row">
+     <app-quiz [questions]="questions$ | async" ></app-quiz>
+  </div>
+
+  {{form.get('mainCategory')?.value | json}}
+  <hr/>
+  {{form.get('subCategory')?.value | json}}

@@ -1,0 +1,10 @@
+<div class="dropdown">
+    <input type="text" class="dropbtn" [formControl]="userInputFormControl" [placeholder]="placeholder">
+    <div class="dropdown-content" *ngIf="filtered$ | async as list">
+        <span *ngFor="let item of list" 
+            (click)="updateValue(item)"  
+            [innerHTML]="item.name | enlightUserInput: userInputFormControl.value"
+        >
+        </span>
+    </div>
+</div>

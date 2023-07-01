@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {Category, CategoryWithSub, Difficulty, Question} from '../../../models/data.models';
-import {Observable, map, mergeMap, of, switchMap, tap} from 'rxjs';
-import {QuizService} from '../../services/quiz.service';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, map, of, tap } from 'rxjs';
+import { Category, CategoryWithSub, Difficulty, Question } from '../../../models/data.models';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
-  selector: 'app-quiz-maker',
-  templateUrl: './quiz-maker.component.html',
-  styleUrls: ['./quiz-maker.component.css']
+  selector: 'app-quiz-maker-next',
+  templateUrl: './quiz-maker-next.component.html',
+  styleUrls: ['./quiz-maker-next.component.css']
 })
-export class QuizMakerComponent {
+export class QuizMakerNextComponent {
 
   form: FormGroup;
 
   categories$: Observable<CategoryWithSub[]>;
-  subcategories$: Observable<Category[] | undefined> | undefined;
+  subcategories$: Observable<Category[] | undefined> | Observable<null>;
 
   questions$!: Observable<Question[]>;
 
@@ -30,6 +30,7 @@ export class QuizMakerComponent {
 
     this.subcategories$ = this.form.get("mainCategory")?.valueChanges.pipe(
       tap((mainCategory: CategoryWithSub)=>{
+        console.log("cambiata la mainCategory!", mainCategory);
         const subCategoryCtrl = this.form.get("subCategory");
         subCategoryCtrl?.setValue("");
         if (mainCategory.subcategories && mainCategory.subcategories.length>0) {
@@ -41,7 +42,11 @@ export class QuizMakerComponent {
         subCategoryCtrl?.updateValueAndValidity();
       }),
       map((mainCategory: CategoryWithSub) => mainCategory.subcategories)
-    );
+    ) || of(null);
+  }
+
+  getFormControl(name: string) {
+    return this.form.get(name) as FormControl;
   }
 
   createQuiz(): void {

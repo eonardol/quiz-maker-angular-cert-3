@@ -6,6 +6,8 @@ import { QuizMakerComponent } from './components/quiz-maker/quiz-maker.component
 import { QuizComponent } from './components/quiz/quiz.component';
 import { QuestionComponent } from './components/question/question.component';
 import { AnswersComponent } from './components/answers/answers.component';
+import { SharedModule } from '../shared/shared.module';
+import { QuizMakerNextComponent } from './components/quiz-maker-next/quiz-maker-next.component';
 
 
 
@@ -14,11 +16,13 @@ import { AnswersComponent } from './components/answers/answers.component';
     QuizMakerComponent,
     QuizComponent,
     QuestionComponent,
-    AnswersComponent
+    AnswersComponent,
+    QuizMakerNextComponent
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class FeatureQuizModule { }
