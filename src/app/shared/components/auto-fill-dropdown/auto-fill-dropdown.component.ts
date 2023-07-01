@@ -37,7 +37,7 @@ export class AutoFillDropdownComponent<T extends Required<Props>> {
   ngOnInit(): void {
     this.filtered$ = this.userInputFormControl.valueChanges.pipe(
       map((userInput)=>{
-        return this._source?.filter(c => c.name?.toLowerCase().indexOf(userInput.toLowerCase()) !== -1)
+        return this._source?.filter(c => (new RegExp(userInput, 'gi')).exec(c.name));
       })
     );
   }
