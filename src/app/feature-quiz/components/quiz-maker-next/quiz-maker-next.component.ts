@@ -29,26 +29,25 @@ export class QuizMakerNextComponent {
     this.categories$ = quizService.getAllCategories();
 
     this.subcategories$ = this.form.get("mainCategory")?.valueChanges.pipe(
-      tap((mainCategory: CategoryWithSub)=>{
-        console.log("cambiata la mainCategory!", mainCategory);
-        const subCategoryCtrl = this.form.get("subCategory");
-        subCategoryCtrl?.reset();
-        if (mainCategory?.subcategories && mainCategory.subcategories.length>0) {
-          subCategoryCtrl?.addValidators(Validators.required);
-        }
-        else {
-          subCategoryCtrl?.clearValidators();
-        }
-        subCategoryCtrl?.updateValueAndValidity();
-      }),
+      tap((mainCategory: CategoryWithSub)=>this.clearAndUpdateSubCategoryValidator(mainCategory)),
       map((mainCategory: CategoryWithSub) => mainCategory?.subcategories)
     ) || of(null);
   }
 
-  getFormControl(name: string) {
-    return this.form.get(name) as FormControl;
+
+  private clearAndUpdateSubCategoryValidator(mainCategory: CategoryWithSub) {
+    const subCategoryCtrl = this.form.get("subCategory");
+    subCategoryCtrl?.reset();
+    if (mainCategory?.subcategories && mainCategory.subcategories.length>0) {
+      subCategoryCtrl?.addValidators(Validators.required);
+    }
+    else {
+      subCategoryCtrl?.clearValidators();
+    }
+    subCategoryCtrl?.updateValueAndValidity();
   }
 
+  
   createQuiz(): void {
     if (this.form.invalid) {
       console.log("form invalid", this.form);
