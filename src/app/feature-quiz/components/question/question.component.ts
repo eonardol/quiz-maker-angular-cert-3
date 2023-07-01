@@ -15,6 +15,9 @@ export class QuestionComponent {
   @Input()
   userAnswer?: string;
 
+  @Input()
+  showSwapBtn: boolean = true;
+
   getButtonClass(answer: string): string {
     if (! this.userAnswer) {
         if (this.currentSelection == answer)
@@ -37,4 +40,7 @@ export class QuestionComponent {
     this.currentSelection = answer;
     this.change.emit(answer);
   }
+
+  @Output()
+  onSwap = new EventEmitter<void>();
 }

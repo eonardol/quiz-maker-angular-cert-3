@@ -10,16 +10,28 @@ import {Router} from '@angular/router';
 })
 export class QuizComponent {
 
-  @Input()
-  questions: Question[] | null = [];
+  _questions: Question[] | null = [];
+  _extraQuestion: Question | null = null;
 
   userAnswers: string[] = [];
   quizService = inject(QuizService);
   router = inject(Router);
 
+  @Input()
+  set questions(questions: Question[] | null) {
+    this._questions = questions?.slice(0, 5) || null;
+    this._extraQuestion = questions ? questions[5] : null;
+  }
+
   submit(): void {
-    this.quizService.computeScore(this.questions ?? [], this.userAnswers);
+    this.quizService.computeScore(this._questions ?? [], this.userAnswers);
     this.router.navigateByUrl("/result");
+  }
+
+  swapQuestion(index: number) {
+    if (!this._questions || !this._extraQuestion) return;
+    this._questions[index] = this._extraQuestion;
+    this._extraQuestion = null;
   }
 
 }

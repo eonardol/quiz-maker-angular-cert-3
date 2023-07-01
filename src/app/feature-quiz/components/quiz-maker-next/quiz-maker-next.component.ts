@@ -50,7 +50,7 @@ export class QuizMakerNextComponent {
   
   createQuiz(): void {
     if (this.form.invalid) {
-      console.log("form invalid", this.form);
+      console.log("invalid, form", this.form);
       this.form.markAllAsTouched();
       return;
     }

@@ -46,7 +46,7 @@ export class QuizMakerComponent {
 
   createQuiz(): void {
     if (this.form.invalid) {
-      console.log("form invalid", this.form);
+      console.log("invalid form", this.form);
       this.form.markAllAsTouched();
       return;
     }
@@ -55,4 +55,5 @@ export class QuizMakerComponent {
 
     this.questions$ = this.quizService.createQuiz(mainCategory.id || subCategory.id, difficulty as Difficulty);
   }
+
 }
