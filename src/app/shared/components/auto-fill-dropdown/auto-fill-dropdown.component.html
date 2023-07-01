@@ -1,8 +1,8 @@
 <div class="dropdown">
-    <input type="text" class="dropbtn" [formControl]="userInputFormControl" [placeholder]="placeholder">
+    <input type="text" class="dropbtn" [formControl]="userInputFormControl" [placeholder]="placeholder" (focus)="markAsTouched()">
     <div class="dropdown-content" *ngIf="filtered$ | async as list">
         <span *ngFor="let item of list" 
-            (click)="updateValue(item)"  
+            (click)="setValueFromDropdown(item)"  
             [innerHTML]="item.name | enlightUserInput: userInputFormControl.value"
         >
         </span>

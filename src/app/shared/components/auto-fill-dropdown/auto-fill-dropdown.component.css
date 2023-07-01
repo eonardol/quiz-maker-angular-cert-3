@@ -1,3 +1,8 @@
+:host.ng-touched.ng-invalid input {
+  border-color: red
+}
+
+
 .dropbtn {
     padding: 5px;
     font-size: 16px;

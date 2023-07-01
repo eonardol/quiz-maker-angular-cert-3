@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, map } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable, map, tap } from 'rxjs';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 interface Props {
   id: number;
@@ -10,46 +10,75 @@ interface Props {
 @Component({
   selector: 'auto-fill-dropdown',
   templateUrl: './auto-fill-dropdown.component.html',
-  styleUrls: ['./auto-fill-dropdown.component.css']
+  styleUrls: ['./auto-fill-dropdown.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: AutoFillDropdownComponent
+    }
+  ]
 })
-export class AutoFillDropdownComponent<T extends Required<Props>> {
-  _source!: T[];
+export class AutoFillDropdownComponent<T extends Required<Props>> implements ControlValueAccessor {
 
-  @Input()
-  set source(value: T[]) {
-    this._source = value;
-    this.userInputFormControl.setValue('');
+  //value!: T | null;
+  disabled = false;
+
+  onChange = (value: T | null) => {};
+
+  onTouched = () => {};
+
+  writeValue(obj: T): void {
+    //this.value = obj;
+    if (obj) {
+      this.userInputFormControl.setValue(obj.name);
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   userInputFormControl: FormControl = new FormControl();
 
   @Input()
-  fc!: FormControl;
+  source!: T[];
 
   @Input()
   placeholder!: string;
   
   filtered$!: Observable<T[] | null | undefined>;
 
-  @Output()
-  onChange: EventEmitter<T> = new EventEmitter();
-
-  ngOnInit(): void {
+  constructor() {
     this.filtered$ = this.userInputFormControl.valueChanges.pipe(
       map((userInput)=>{
-        return this._source?.filter(c => (new RegExp(userInput, 'gi')).exec(c.name));
-      })
+        return this.source?.filter(c => (new RegExp(userInput, 'gi')).exec(c.name));
+      }),
+      tap(()=>this.onChange(null))
     );
   }
 
-  
+  ngOnInit(): void {
+    
 
-  updateValue(item: any) {
-    // set only name in "fake" form input 
-    this.userInputFormControl.setValue(item.name);
-
-    // set entire object in real form input end emit to parent components
-    this.fc.setValue(item);
-    this.onChange.emit(item);
   }
+
+  setValueFromDropdown(item: T) {
+    this.userInputFormControl.setValue(item.name);
+    //this.value = item;
+    this.onChange(item);
+  }
+
+  markAsTouched(): void {
+    this.onTouched();
+  }
+
 }

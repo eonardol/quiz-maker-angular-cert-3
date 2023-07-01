@@ -21,8 +21,8 @@ export class QuizMakerNextComponent {
   constructor(private fb: FormBuilder, protected quizService: QuizService) {
 
     this.form = this.fb.group({
-      mainCategory: [{value: '', disabled: false}, [Validators.required]],
-      subCategory: [{value: '', disabled: false}],
+      mainCategory: [{value: null, disabled: false}, [Validators.required]],
+      subCategory: [{value: null, disabled: false}],
       difficulty: [{value: '', disabled: false}, [Validators.required]],
    });
 
@@ -32,8 +32,8 @@ export class QuizMakerNextComponent {
       tap((mainCategory: CategoryWithSub)=>{
         console.log("cambiata la mainCategory!", mainCategory);
         const subCategoryCtrl = this.form.get("subCategory");
-        subCategoryCtrl?.setValue("");
-        if (mainCategory.subcategories && mainCategory.subcategories.length>0) {
+        subCategoryCtrl?.reset();
+        if (mainCategory?.subcategories && mainCategory.subcategories.length>0) {
           subCategoryCtrl?.addValidators(Validators.required);
         }
         else {
@@ -41,7 +41,7 @@ export class QuizMakerNextComponent {
         }
         subCategoryCtrl?.updateValueAndValidity();
       }),
-      map((mainCategory: CategoryWithSub) => mainCategory.subcategories)
+      map((mainCategory: CategoryWithSub) => mainCategory?.subcategories)
     ) || of(null);
   }
 

@@ -5,7 +5,7 @@
         <ng-container *ngIf="categories$ | async as categories">
           <auto-fill-dropdown
               placeholder="Select category"
-              [fc]="getFormControl('mainCategory')"
+              formControlName="mainCategory"
               [source]="categories"
           ></auto-fill-dropdown>
         </ng-container>
@@ -14,7 +14,7 @@
         <ng-container *ngIf="subcategories$ | async as subcategories">
           <auto-fill-dropdown
             placeholder="Select subcategory"
-            [fc]="getFormControl('subCategory')"
+            formControlName="subCategory"
             [source]="subcategories"
           ></auto-fill-dropdown>
         </ng-container>
@@ -34,7 +34,3 @@
   <div class="row">
      <app-quiz [questions]="questions$ | async" ></app-quiz>
   </div>
-
-  {{form.get('mainCategory')?.value | json}}
-  <hr/>
-  {{form.get('subCategory')?.value | json}}
