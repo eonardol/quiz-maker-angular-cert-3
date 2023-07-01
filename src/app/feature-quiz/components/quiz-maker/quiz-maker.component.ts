@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Category, CategoryWithSub, Difficulty, Question} from '../data.models';
+import {Category, CategoryWithSub, Difficulty, Question} from '../../models/data.models';
 import {Observable, map, mergeMap, of, switchMap, tap} from 'rxjs';
-import {QuizService} from '../quiz.service';
+import {QuizService} from '../../services/quiz.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -52,8 +52,6 @@ export class QuizMakerComponent {
     }
 
     const { mainCategory, subCategory, difficulty } = this.form.value;
-
-    debugger;
 
     this.questions$ = this.quizService.createQuiz(mainCategory.id || subCategory.id, difficulty as Difficulty);
   }

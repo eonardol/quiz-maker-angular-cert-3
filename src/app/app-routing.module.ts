@@ -1,9 +1,9 @@
 import {inject, NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {QuizMakerComponent} from './quiz-maker/quiz-maker.component';
-import {AnswersComponent} from './answers/answers.component';
-import {QuizService} from './quiz.service';
+import {QuizMakerComponent} from './feature-quiz/components/quiz-maker/quiz-maker.component';
+import {AnswersComponent} from './feature-quiz/components/answers/answers.component';
+import {QuizService} from './feature-quiz/services/quiz.service';
 
 const routes: Routes = [{
   path: "result", component: AnswersComponent, resolve: {data: () => inject(QuizService).getLatestResults()}
