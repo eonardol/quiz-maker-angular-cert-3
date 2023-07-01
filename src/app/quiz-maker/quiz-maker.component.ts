@@ -55,6 +55,6 @@ export class QuizMakerComponent {
 
     debugger;
 
-    this.questions$ = this.quizService.createQuiz(mainCategory.id || subCategory.id, difficulty);
+    this.questions$ = this.quizService.createQuiz(mainCategory.id || subCategory.id, difficulty as Difficulty);
   }
 }
