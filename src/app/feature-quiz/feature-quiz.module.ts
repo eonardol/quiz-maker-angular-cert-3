@@ -8,6 +8,7 @@ import { QuestionComponent } from './components/question/question.component';
 import { AnswersComponent } from './components/answers/answers.component';
 import { SharedModule } from '../shared/shared.module';
 import { QuizMakerNextComponent } from './components/quiz-maker-next/quiz-maker-next.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -21,6 +22,7 @@ import { QuizMakerNextComponent } from './components/quiz-maker-next/quiz-maker-
   ],
   imports: [
     CommonModule,
+    RouterModule,
     ReactiveFormsModule,
     SharedModule
   ]

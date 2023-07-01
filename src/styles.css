@@ -4,3 +4,7 @@
 select.ng-touched.ng-invalid,input.ng-touched.ng-invalid {
     border-color: red
 }
+
+.text-right {
+    text-align: right;
+}
