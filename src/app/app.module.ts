@@ -4,11 +4,14 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import { FeatureQuizModule } from './feature-quiz/feature-quiz.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { SpinnerComponent } from './core/components/spinner/spinner.component';
+import { HttpInterceptorService } from './core/interceptor/http-interceptor.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -16,7 +19,11 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     FeatureQuizModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
