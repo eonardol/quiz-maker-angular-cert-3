@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, of, tap } from 'rxjs';
 import { Category, CategoryWithSub, Difficulty, Question } from '../../../models/data.models';
 import { QuizService } from '../../services/quiz.service';

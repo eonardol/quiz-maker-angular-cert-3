@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Category, CategoryWithSub, Difficulty, Question} from '../../../models/data.models';
-import {Observable, map, mergeMap, of, switchMap, tap} from 'rxjs';
+import {Observable, map, tap} from 'rxjs';
 import {QuizService} from '../../services/quiz.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-quiz-maker',

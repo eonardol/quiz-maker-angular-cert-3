@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable, map, startWith, tap } from 'rxjs';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 interface Props {
@@ -19,9 +19,8 @@ interface Props {
     }
   ]
 })
-export class AutoFillDropdownComponent<T extends Required<Props>> implements ControlValueAccessor {
-
-  //value!: T | null;
+export class AutoFillDropdownComponent<T extends Required<Props>> implements ControlValueAccessor, OnInit {
+  // TODO: implement disabled state
   disabled = false;
 
   onChange = (value: T | null) => {};
@@ -29,9 +28,8 @@ export class AutoFillDropdownComponent<T extends Required<Props>> implements Con
   onTouched = () => {};
 
   writeValue(obj: T): void {
-    //this.value = obj;
     if (obj) {
-      this.userInputFormControl.setValue(obj.name);
+      this.searchFormControl.setValue(obj.name);
     }
   }
 
@@ -47,7 +45,7 @@ export class AutoFillDropdownComponent<T extends Required<Props>> implements Con
     this.disabled = isDisabled;
   }
 
-  userInputFormControl: FormControl = new FormControl();
+  searchFormControl: FormControl = new FormControl();
 
   @Input()
   source!: T[];
@@ -58,22 +56,23 @@ export class AutoFillDropdownComponent<T extends Required<Props>> implements Con
   filtered$!: Observable<T[] | null | undefined>;
 
   constructor() {
-    this.filtered$ = this.userInputFormControl.valueChanges.pipe(
+    
+  }
+
+  ngOnInit(): void {
+    
+    this.filtered$ = this.searchFormControl.valueChanges.pipe(
+      startWith(''),
       map((userInput)=>{
         return this.source?.filter(c => (new RegExp(userInput, 'gi')).exec(c.name));
       }),
       tap(()=>this.onChange(null))
     );
-  }
-
-  ngOnInit(): void {
     
-
   }
 
   setValueFromDropdown(item: T) {
-    this.userInputFormControl.setValue(item.name);
-    //this.value = item;
+    this.searchFormControl.setValue(item.name);
     this.onChange(item);
   }
 
