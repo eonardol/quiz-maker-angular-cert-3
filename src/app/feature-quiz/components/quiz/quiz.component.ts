@@ -21,6 +21,7 @@ export class QuizComponent {
   set questions(questions: Question[] | null) {
     this._questions = questions?.slice(0, 5) || null;
     this._extraQuestion = questions ? questions[5] : null;
+    this.userAnswers = [];
   }
 
   submit(): void {
@@ -30,8 +31,13 @@ export class QuizComponent {
 
   swapQuestion(index: number) {
     if (!this._questions || !this._extraQuestion) return;
+    this.userAnswers[index] = '';
     this._questions[index] = this._extraQuestion;
     this._extraQuestion = null;
+  }
+
+  allQuestionAnswered(): boolean {
+    return this.userAnswers.filter(el=>el).length == 5;
   }
 
 }

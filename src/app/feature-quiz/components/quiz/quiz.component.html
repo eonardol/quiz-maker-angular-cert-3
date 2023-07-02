@@ -7,7 +7,7 @@
 </app-question>
 
 <div>
-  <button class="inverse large" *ngIf="userAnswers.length == 5" (click)="submit()">
+  <button class="inverse large" *ngIf="allQuestionAnswered()" (click)="submit()">
     Submit
   </button>
 </div>
