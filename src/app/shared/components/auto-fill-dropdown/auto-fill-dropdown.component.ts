@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { Observable, map, startWith, tap } from 'rxjs';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -19,7 +19,7 @@ interface Props {
     }
   ]
 })
-export class AutoFillDropdownComponent<T extends Required<Props>> implements ControlValueAccessor, OnInit {
+export class AutoFillDropdownComponent<T extends Required<Props>> implements ControlValueAccessor, AfterViewInit {
   // TODO: implement disabled state
   disabled = false;
 
@@ -56,19 +56,19 @@ export class AutoFillDropdownComponent<T extends Required<Props>> implements Con
   filtered$!: Observable<T[] | null | undefined>;
 
   constructor() {
-    
-  }
-
-  ngOnInit(): void {
-    
     this.filtered$ = this.searchFormControl.valueChanges.pipe(
-      startWith(''),
+      //startWith(''),
       map((userInput)=>{
         return this.source?.filter(c => (new RegExp(userInput, 'gi')).exec(c.name));
       }),
       tap(()=>this.onChange(null))
     );
-    
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(()=>{
+      this.searchFormControl.setValue('');
+    })
   }
 
   setValueFromDropdown(item: T) {
